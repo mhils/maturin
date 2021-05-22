@@ -89,6 +89,46 @@ jobs:
           command: test
           args: --target x86_64-unknown-linux-musl
 
+  test-freebsd:
+    name: Test FreeBSD
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache cargo build
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: freebsd-maturin-${{ hashFiles('Cargo.lock') }}
+      - name: Cache test crates cargo build
+        uses: actions/cache@v2
+        with:
+          path: test-crates/*/target
+          key: freebsd-test-crates-${{ hashFiles('test-crates/*/Cargo.lock') }}
+      - name: cargo test
+        uses: vmactions/freebsd-vm@v0.1.4
+        with:
+          mem: 4096
+          usesh: true
+          prepare: pkg install -y curl bash python
+          run: |
+            set -euo pipefail
+
+            export RUST_BACKTRACE=1
+            # Workaround for hanging rustup
+            # https://github.com/rust-lang/rustup/issues/2774
+            export RUSTUP_IO_THREADS=1
+            export TOOLCHAIN=stable
+
+            curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain $TOOLCHAIN
+            python -m ensurepip
+            python -m pip install --upgrade cffi virtualenv
+
+            $HOME/.cargo/bin/rustup run $TOOLCHAIN cargo build
+            $HOME/.cargo/bin/rustup run $TOOLCHAIN cargo test
+
   test-auditwheel:
     name: Test Auditwheel
     runs-on: ubuntu-latest
