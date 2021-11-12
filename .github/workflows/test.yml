@@ -100,6 +100,35 @@ jobs:
           pypy3 -m pip install pytest
           pypy3 -m pytest test-crates/pyo3-mixed-submodule/tests/
 
+  test-mingw:
+    name: Test Mingw
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      # Force version because of https://github.com/msys2/setup-msys2/issues/167
+      - uses: msys2/setup-msys2@v2.4.2
+        with:
+          msystem: mingw64
+          install: >-
+            git
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-python-pip
+      - uses: actions/checkout@v2
+      - name: Install cffi and virtualenv
+        run: pip install cffi virtualenv
+      - uses: actions-rs/toolchain@v1
+        id: rustup
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+
   test-auditwheel:
     name: Test Auditwheel
     runs-on: ubuntu-latest
