@@ -36,7 +36,6 @@ pub use crate::metadata::{Metadata21, WheelMetadata};
 pub use crate::module_writer::{
     write_dist_info, ModuleWriter, PathWriter, SDistWriter, WheelWriter,
 };
-pub use crate::new_project::{init_project, new_project, GenerateProjectOptions};
 pub use crate::pyproject_toml::PyProjectToml;
 pub use crate::python_interpreter::PythonInterpreter;
 pub use crate::target::Target;
@@ -57,7 +56,6 @@ mod cross_compile;
 mod develop;
 mod metadata;
 mod module_writer;
-mod new_project;
 mod pyproject_toml;
 mod python_interpreter;
 #[cfg(feature = "upload")]
