@@ -10,6 +10,8 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::str;
 
+mod sysconfig;
+
 /// This snippets will give us information about the python interpreter's
 /// version and abi as json through stdout
 const GET_INTERPRETER_METADATA: &str = include_str!("get_interpreter_metadata.py");

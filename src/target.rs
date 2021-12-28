@@ -11,8 +11,8 @@ use std::str;
 use target_lexicon::{Environment, Triple};
 
 /// All supported operating system
-#[derive(Debug, Clone, Eq, PartialEq)]
-enum Os {
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub enum Os {
     Linux,
     Windows,
     Macos,
@@ -41,7 +41,7 @@ impl fmt::Display for Os {
 }
 
 /// All supported CPU architectures
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub enum Arch {
     Aarch64,
     Armv7L,
