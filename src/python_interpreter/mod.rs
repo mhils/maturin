@@ -230,7 +230,8 @@ fn find_all_windows(target: &Target, min_python_minor: usize) -> Result<Vec<Stri
     Ok(interpreter)
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, Deserialize)]
+#[serde(rename_all = "lowercase")]
 pub enum InterpreterKind {
     CPython,
     PyPy,
