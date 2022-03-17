@@ -42,7 +42,7 @@ sdist-include = ["path/**/*"]
 ## Build Wheels
 
 For portability reasons, native python modules on linux must only dynamically link a set of very few libraries which are installed basically everywhere, hence the name manylinux.
-The pypa offers special docker images and a tool called [auditwheel](https://github.com/pypa/auditwheel/) to ensure compliance with the [manylinux rules](https://www.python.org/dev/peps/pep-0571/#the-manylinux2010-policy).
+The pypa offers special docker images and a tool called [auditwheel](https://github.com/pypa/auditwheel/) to ensure compliance with the [manylinux rules](https://peps.python.org/pep-0599/#the-manylinux2014-policy).
 If you want to publish widely usable wheels for linux pypi, **you need to use a manylinux docker image** or [build with zig](#use-zig).
 
 The Rust compiler since version 1.47 [requires at least glibc 2.11](https://github.com/rust-lang/rust/blob/master/RELEASES.md#version-1470-2020-10-08), so you need to use at least manylinux2010.
@@ -57,7 +57,7 @@ maturin contains a reimplementation of auditwheel automatically checks the gener
 
 You can also manually disable those checks and directly use native linux target with `--manylinux off`.
 
-For full manylinux compliance you need to compile in a CentOS docker container. The [pyo3/maturin](https://ghcr.io/pyo3/maturin) image is based on the manylinux2010 image,
+For full manylinux compliance you need to compile in a CentOS docker container. The [pyo3/maturin](https://ghcr.io/pyo3/maturin) image is based on the manylinux2014 image,
 and passes arguments to the `maturin` binary. You can use it like this:
 
 ```
@@ -146,7 +146,7 @@ OPTIONS:
         --zig
             For manylinux targets, use zig to ensure compliance for the chosen manylinux version
 
-            Default to manylinux2010/manylinux_2_12 if you do not specify an `--compatibility`
+            Default to manylinux2014/manylinux_2_17 if you do not specify an `--compatibility`
 
             Make sure you installed zig with `pip install maturin[zig]`
 ```

@@ -89,7 +89,7 @@ pub struct BuildOptions {
 
     /// For manylinux targets, use zig to ensure compliance for the chosen manylinux version
     ///
-    /// Default to manylinux2010/manylinux_2_12 if you do not specify an `--compatibility`
+    /// Default to manylinux2014/manylinux_2_17 if you do not specify an `--compatibility`
     ///
     /// Make sure you installed zig with `pip install maturin[zig]`
     #[clap(long)]
@@ -338,8 +338,13 @@ impl BuildOptions {
                     None
                 }
             });
-        if platform_tag == Some(PlatformTag::manylinux1()) {
-            eprintln!("⚠️  Warning: manylinux1 is unsupported by the Rust compiler.");
+        if let Some(platform_tag) = platform_tag {
+            if !platform_tag.is_supported() {
+                eprintln!(
+                    "⚠️  Warning: {} is unsupported by the Rust compiler.",
+                    platform_tag
+                );
+            }
         }
 
         if !args_from_pyproject.is_empty() {

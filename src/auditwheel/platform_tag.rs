@@ -61,6 +61,15 @@ impl PlatformTag {
     pub fn is_portable(&self) -> bool {
         !matches!(self, PlatformTag::Linux)
     }
+
+    /// Is it supported by Rust compiler
+    pub fn is_supported(&self) -> bool {
+        match self {
+            PlatformTag::Manylinux { x, y } => (*x, *y) >= (2, 17),
+            PlatformTag::Musllinux { .. } => true,
+            PlatformTag::Linux => true,
+        }
+    }
 }
 
 impl fmt::Display for PlatformTag {
